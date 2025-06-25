@@ -1,8 +1,17 @@
 {
+  "id": "catastrophic_quaken",
   "name": "Catastrophic Quaken",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/9/96/CatastrophicQuaken_infobox.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Boulder"
-  ]
+  ],
+  "attack": 12,
+  "speed": 14,
+  "armor": 35,
+  "firepower": 10,
+  "shot_limit": 6,
+  "venom": 0,
+  "jaw_strength": 20,
+  "stealth": 3
 }

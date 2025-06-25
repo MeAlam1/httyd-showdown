@@ -1,8 +1,17 @@
 {
+  "id": "eruptodon",
   "name": "Eruptodon",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/1/19/Eruptodon_Render.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Boulder"
-  ]
+  ],
+  "attack": 9,
+  "speed": 7,
+  "armor": 36,
+  "firepower": 8,
+  "shot_limit": 7,
+  "venom": 0,
+  "jaw_strength": 14,
+  "stealth": 2
 }

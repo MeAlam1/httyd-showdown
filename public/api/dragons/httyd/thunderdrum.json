@@ -1,8 +1,17 @@
 {
+  "id": "thunderdrum",
   "name": "Thunderdrum",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/3/3a/Thunder-drum-how-to-train-your-dragon.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Tidal"
-  ]
+  ],
+  "attack": 12,
+  "speed": 14,
+  "armor": 10,
+  "firepower": 16,
+  "shot_limit": 6,
+  "venom": 0,
+  "jaw_strength": 7,
+  "stealth": 8
 }

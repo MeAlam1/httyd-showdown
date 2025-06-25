@@ -1,8 +1,17 @@
 {
+  "id": "deadly_nadder",
   "name": "Deadly Nadder",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/d/dd/NADDER.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Tracker"
-  ]
+  ],
+  "attack": 10,
+  "speed": 8,
+  "armor": 16,
+  "firepower": 18,
+  "shot_limit": 6,
+  "venom": 16,
+  "jaw_strength": 5,
+  "stealth": 10
 }

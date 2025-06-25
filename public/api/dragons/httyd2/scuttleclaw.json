@@ -1,8 +1,17 @@
 {
+  "id": "scuttleclaw",
   "name": "Scuttleclaw",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/a/a0/Clavagarras.png",
   "origin": "How To Train Your Dragon 2",
   "class": [
     "Sharp"
-  ]
+  ],
+  "attack": 10,
+  "speed": 16,
+  "armor": 8,
+  "firepower": 10,
+  "shot_limit": 8,
+  "venom": 2,
+  "jaw_strength": 3,
+  "stealth": 10
 }

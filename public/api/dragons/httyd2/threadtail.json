@@ -1,8 +1,17 @@
 {
+  "id": "threadtail",
   "name": "Threadtail",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/b/bd/Threadtail_-_NBG.png",
   "origin": "How To Train Your Dragon 2",
   "class": [
     "Stoker"
-  ]
+  ],
+  "attack": 14,
+  "speed": 6,
+  "armor": 3,
+  "firepower": 10,
+  "shot_limit": 6,
+  "venom": 40,
+  "jaw_strength": 2,
+  "stealth": 7
 }

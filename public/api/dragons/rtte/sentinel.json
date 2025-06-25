@@ -1,8 +1,17 @@
 {
+  "id": "sentinel",
   "name": "Sentinel",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/0/07/Sentinelaa.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Boulder"
-  ]
+  ],
+  "attack": 12,
+  "speed": 8,
+  "armor": 15,
+  "firepower": 6,
+  "shot_limit": 8,
+  "venom": 0,
+  "jaw_strength": 10,
+  "stealth": 16
 }

@@ -1,8 +1,17 @@
 {
+  "id": "death_song",
   "name": "Death Song",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/9/95/1481796023720.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 16,
+  "speed": 17,
+  "armor": 16,
+  "firepower": 13,
+  "shot_limit": 13,
+  "venom": 0,
+  "jaw_strength": 10,
+  "stealth": 0
 }

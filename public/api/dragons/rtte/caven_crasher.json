@@ -1,8 +1,17 @@
 {
+  "id": "caven_crasher",
   "name": "Cavern Crasher",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/7/7d/131364321.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 14,
+  "speed": 18,
+  "armor": 16,
+  "firepower": 20,
+  "shot_limit": 16,
+  "venom": 0,
+  "jaw_strength": 8,
+  "stealth": 16
 }

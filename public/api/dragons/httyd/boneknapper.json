@@ -1,8 +1,17 @@
 {
+  "id": "boneknapper",
   "name": "Boneknapper",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/7/70/Bonenapper-how-to-train-your-dragon.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 7,
+  "speed": 10,
+  "armor": 20,
+  "firepower": 9,
+  "shot_limit": 6,
+  "venom": 0,
+  "jaw_strength": 4,
+  "stealth": 8
 }

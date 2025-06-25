@@ -1,8 +1,17 @@
 {
+  "id": "whispering_death",
   "name": "Whispering Death",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/c/c3/Sdsd.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Boulder"
-  ]
+  ],
+  "attack": 16,
+  "speed": 8,
+  "armor": 20,
+  "firepower": 10,
+  "shot_limit": 10,
+  "venom": 10,
+  "jaw_strength": 11,
+  "stealth": 14
 }

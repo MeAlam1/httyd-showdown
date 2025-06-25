@@ -1,8 +1,17 @@
 {
+  "id": "changewing",
   "name": "Changewing",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/f/f5/Alacambiante.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 9,
+  "speed": 14,
+  "armor": 1,
+  "firepower": 12,
+  "shot_limit": 10,
+  "venom": 0,
+  "jaw_strength": 2,
+  "stealth": 20
 }

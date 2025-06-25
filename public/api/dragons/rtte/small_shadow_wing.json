@@ -1,8 +1,17 @@
 {
+  "id": "small_shadow_wing",
   "name": "Small Shadow Wing",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/2/21/Small_Shadow_Render.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Stoker"
-  ]
+  ],
+  "attack": 25,
+  "speed": 14,
+  "armor": 15,
+  "firepower": 18,
+  "shot_limit": 60,
+  "venom": 0,
+  "jaw_strength": 12,
+  "stealth": 4
 }

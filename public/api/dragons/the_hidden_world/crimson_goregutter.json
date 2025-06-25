@@ -1,8 +1,17 @@
 {
+  "id": "crimson_goregutter",
   "name": "Crimson Goregutter",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/6/63/THW-Crimson_Goregutter-Transparent.png",
   "origin": "The Hidden World",
   "class": [
     "Boulder"
-  ]
+  ],
+  "attack": 17,
+  "speed": 10,
+  "armor": 18,
+  "firepower": 12,
+  "shot_limit": 6,
+  "venom": 0,
+  "jaw_strength": 12,
+  "stealth": 13
 }

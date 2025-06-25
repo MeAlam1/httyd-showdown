@@ -1,8 +1,17 @@
 {
+  "id": "slitherwing",
   "name": "Slitherwing",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/5/54/Slitherwing_-_transparent.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 14,
+  "speed": 18,
+  "armor": 13,
+  "firepower": 0,
+  "shot_limit": 0,
+  "venom": 20,
+  "jaw_strength": 8,
+  "stealth": 9
 }

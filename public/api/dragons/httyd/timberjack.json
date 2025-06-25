@@ -1,8 +1,17 @@
 {
+  "id": "timberjack",
   "name": "Timberjack",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/7/71/Timber.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Sharp"
-  ]
+  ],
+  "attack": 10,
+  "speed": 12,
+  "armor": 8,
+  "firepower": 10,
+  "shot_limit": 8,
+  "venom": 0,
+  "jaw_strength": 3,
+  "stealth": 13
 }

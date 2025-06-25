@@ -1,8 +1,17 @@
 {
+  "id": "snow_wraith",
   "name": "Snow Wraith",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/1/13/1481265150027.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Strike"
-  ]
+  ],
+  "attack": 18,
+  "speed": 18,
+  "armor": 22,
+  "firepower": 24,
+  "shot_limit": 10,
+  "venom": 0,
+  "jaw_strength": 8,
+  "stealth": 30
 }

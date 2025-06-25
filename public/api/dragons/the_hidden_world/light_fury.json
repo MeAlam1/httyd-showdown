@@ -1,8 +1,17 @@
 {
+  "id": "light_fury",
   "name": "Light Fury",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/d/d8/THW-Unnamed_Light_Fury-Transparent.png",
   "origin": "The Hidden World",
   "class": [
     "Strike"
-  ]
+  ],
+  "attack": 15,
+  "speed": 20,
+  "armor": 18,
+  "firepower": 14,
+  "shot_limit": 6,
+  "venom": 0,
+  "jaw_strength": 6,
+  "stealth": 18
 }

@@ -1,8 +1,17 @@
 {
+    "id": "stormcutter",
   "name": "Stormcutter",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/e/eb/1481742530411.png",
   "origin": "How To Train Your Dragon 2",
   "class": [
     "Sharp"
-  ]
+  ],
+  "attack": 10,
+  "speed": 17,
+  "armor": 4,
+  "firepower": 12,
+  "shot_limit": 8,
+  "venom": 0,
+  "jaw_strength": 5,
+  "stealth": 12
 }

@@ -1,8 +1,17 @@
 {
+  "id": "fire_terror",
   "name": "Fire Terror",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/9/96/Fire_Terror_70.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Stoker"
-  ]
+  ],
+  "attack": 0,
+  "speed": 0,
+  "armor": 0,
+  "firepower": 0,
+  "shot_limit": 0,
+  "venom": 0,
+  "jaw_strength": 0,
+  "stealth": 0
 }

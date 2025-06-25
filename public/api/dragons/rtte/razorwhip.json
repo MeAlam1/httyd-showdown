@@ -1,8 +1,17 @@
 {
+  "id": "razorwhip",
   "name": "Razorwhip",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/5/53/Sisalladura.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Sharp"
-  ]
+  ],
+  "attack": 18,
+  "speed": 18,
+  "armor": 32,
+  "firepower": 12,
+  "shot_limit": 10,
+  "venom": 8,
+  "jaw_strength": 7,
+  "stealth": 5
 }

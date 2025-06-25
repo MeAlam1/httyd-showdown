@@ -1,8 +1,17 @@
 {
+  "id": "armorwing",
   "name": "Armorwing",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/9/98/Armorwing.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 12,
+  "speed": 7,
+  "armor": 50,
+  "firepower": 10,
+  "shot_limit": 4,
+  "venom": 0,
+  "jaw_strength": 11,
+  "stealth": 1
 }

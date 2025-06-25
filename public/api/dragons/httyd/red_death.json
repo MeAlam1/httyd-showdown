@@ -1,8 +1,17 @@
 {
+  "id": "red_death",
   "name": "Red Death",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/e/e4/Red_Death_flying_%28transparent%29.png",
   "origin": "How To Train Your Dragon",
   "class": [
     "Stoker"
-  ]
+  ],
+  "attack": 28,
+  "speed": 7,
+  "armor": 30,
+  "firepower": 27,
+  "shot_limit": 9,
+  "venom": 0,
+  "jaw_strength": 22,
+  "stealth": 2
 }

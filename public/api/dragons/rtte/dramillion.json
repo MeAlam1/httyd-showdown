@@ -1,8 +1,17 @@
 {
+  "id": "dramillion",
   "name": "Dramillion",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/e/ed/Dramillion_Render.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Mystery"
-  ]
+  ],
+  "attack": 18,
+  "speed": 14,
+  "armor": 8,
+  "firepower": 20,
+  "shot_limit": 40,
+  "venom": 0,
+  "jaw_strength": 6,
+  "stealth": 8
 }

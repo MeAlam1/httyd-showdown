@@ -1,8 +1,17 @@
 {
+  "id": "thornridge",
   "name": "Thornridge",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/3/36/Thornridge_-_NBG.png",
   "origin": "How To Train Your Dragon 2",
   "class": [
     "Sharp"
-  ]
+  ],
+  "attack": 0,
+  "speed": 0,
+  "armor": 0,
+  "firepower": 0,
+  "shot_limit": 0,
+  "venom": 0,
+  "jaw_strength": 0,
+  "stealth": 0
 }

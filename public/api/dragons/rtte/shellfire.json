@@ -1,8 +1,17 @@
 {
+  "id": "shellfire",
   "name": "Shellfire",
   "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/2/29/ShellFire_Render.png",
   "origin": "Dragons: Race to the Edge",
   "class": [
     "Tidal"
-  ]
+  ],
+  "attack": 20,
+  "speed": 14,
+  "armor": 16,
+  "firepower": 22,
+  "shot_limit": 8,
+  "venom": 0,
+  "jaw_strength": 15,
+  "stealth": 17
 }
