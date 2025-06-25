@@ -1,0 +1,1 @@
+# How to Train your Dragon Showdown Simulator, Inspired by Pokémon Showdown.

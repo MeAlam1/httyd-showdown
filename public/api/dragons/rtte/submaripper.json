@@ -1,0 +1,9 @@
+{
+  "name": "Submaripper",
+  "img": "https://static.wikia.nocookie.net/howtotrainyourdragon/images/9/96/Submaripper_Render.png",
+  "origin": "Dragons: Race to the Edge",
+  "class": [
+    "Tracker",
+    "Tidal"
+  ]
+}
