@@ -1,12 +1,12 @@
 export class DragonsCache {
     static cache = {};
 
-    static setAll(dragons) {
-        this.cache = dragons;
+    static setAll(pDragons) {
+        this.cache = pDragons;
     }
 
-    static getById(id) {
-        return this.cache[id] || null;
+    static getById(pId) {
+        return this.cache[pId] || null;
     }
 
     static getAll() {

@@ -2,8 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export class BaseJsonLoader {
-    constructor(baseDir) {
-        this.baseDir = baseDir;
+    constructor(pBaseDir) {
+        this.baseDir = pBaseDir;
     }
 
     async loadAll() {
