@@ -1,0 +1,38 @@
+import React, {useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
+import UUIDUtils from '../common/utils/UUIDUtils';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
+function Register() {
+    const query = useQuery();
+    const uuid = query.get('id');
+    const [isValid, setIsValid] = useState(null);
+
+    useEffect(() => {
+        if (!uuid) {
+            setIsValid(false);
+            return;
+        }
+        const uuidUtils = new UUIDUtils();
+        uuidUtils.validateUUID(uuid)
+            .then(valid => setIsValid(valid))
+            .catch(() => setIsValid(false));
+    }, [uuid]);
+
+    if (!uuid) return <p>No UUID provided.</p>;
+    if (isValid === null) return <p>Validating...</p>;
+    if (!isValid) return <p>Invalid or expired registration link.</p>;
+
+    return (
+        <div>
+            <h2>Register Page</h2>
+            <p>Generated UUID: {uuid}</p>
+            {/* Registration form goes here */}
+        </div>
+    );
+}
+
+export default Register;
