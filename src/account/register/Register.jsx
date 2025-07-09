@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import UUIDUtils from '../common/utils/UUIDUtils';
+import UUIDUtils from '../../../common/utils/UUIDUtils';
+import RegisterForm from './RegisterForm';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -30,7 +31,7 @@ function Register() {
         <div>
             <h2>Register Page</h2>
             <p>Generated UUID: {uuid}</p>
-            {/* Registration form goes here */}
+            <RegisterForm/>
         </div>
     );
 }

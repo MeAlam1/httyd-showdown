@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
-import Register from './Register';
+import Register from './account/register/Register';
 import UUIDUtils from '../common/utils/UUIDUtils';
 
 function Home() {
