@@ -17,15 +17,15 @@ function Register() {
             setIsValid(false);
             return;
         }
-        const uuidUtils = UUIDUtils.withPurpose("register");
+        const uuidUtils = UUIDUtils.withPurpose('register');
         uuidUtils.validateUUID(uuid)
-            .then(valid => setIsValid(valid))
+            .then(setIsValid)
             .catch(() => setIsValid(false));
     }, [uuid]);
 
-    if (!uuid) return <p>No UUID provided.</p>;
-    if (isValid === null) return <p>Validating...</p>;
-    if (!isValid) return <p>Invalid or expired registration link.</p>;
+    if (!uuid) return <Message text="No UUID provided."/>;
+    if (isValid === null) return <Message text="Validating..."/>;
+    if (!isValid) return <Message text="Invalid or expired registration link."/>;
 
     return (
         <div>
@@ -34,6 +34,10 @@ function Register() {
             <RegisterForm/>
         </div>
     );
+}
+
+function Message({text}) {
+    return <p>{text}</p>;
 }
 
 export default Register;
