@@ -16,7 +16,7 @@ function Register() {
             setIsValid(false);
             return;
         }
-        const uuidUtils = new UUIDUtils();
+        const uuidUtils = UUIDUtils.withPurpose("register");
         uuidUtils.validateUUID(uuid)
             .then(valid => setIsValid(valid))
             .catch(() => setIsValid(false));

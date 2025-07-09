@@ -6,7 +6,7 @@ function Home() {
     const navigate = useNavigate();
 
     const handleRegister = async () => {
-        const uuidUtils = new UUIDUtils();
+        const uuidUtils = UUIDUtils.withPurpose("register");
         const newUUID = await uuidUtils.fetchUUID();
         navigate(`/register?id=${newUUID}`);
     };
