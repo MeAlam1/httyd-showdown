@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-
 import Register from './account/register/Register';
 import UUIDUtils from '../common/utils/UUIDUtils';
 import Battle from "./account/battle/Battle.jsx";
+import BattleView from "./account/battle/BattleView.jsx";
 
 function Home() {
     const navigate = useNavigate();
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/battle" element={<Battle/>}/>
+                <Route path="/battle/:battleId" element={<BattleView/>}/>
             </Routes>
         </Router>
     );

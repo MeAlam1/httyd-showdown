@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Loader from '../../../common/server/Loader';
 
 function Battle() {
-    const [form, setForm] = useState({playerIds: 'player1,player2'});
+    const [form, setForm] = useState({playerId: 'player1'});
     const [error, setError] = useState('');
     const [battle, setBattle] = useState(null);
 
@@ -19,19 +19,20 @@ function Battle() {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    playerIds: form.playerIds.split(',').map(id => id.trim()).filter(id => id)
+                    playerId: form.playerId
                 }),
                 credentials: 'include'
             });
             setBattle(result);
+            window.location.href = `/battle/${result.battleId}`; // Ignore Warning
         } catch (err) {
-            setError(err.message || 'BattleForm creation failed');
+            setError(err.message || 'Battle creation failed');
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <FormField label="Player IDs (comma separated):" name="playerIds" value={form.playerIds}
+            <FormField label="Player ID:" name="playerId" value={form.playerId}
                        onChange={handleChange} required/>
             <button type="submit">Create Battle</button>
             <FormMessage error={error} battle={battle}/>
