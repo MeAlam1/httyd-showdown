@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import Loader from '../../../common/server/Loader';
 
-function Battle() {
-    const [form, setForm] = useState({playerId: 'player1'});
+function JoinBattle() {
+    const [form, setForm] = useState({battleId: '', playerId: ''});
     const [error, setError] = useState('');
-    const [battle, setBattle] = useState(null);
+    const [success, setSuccess] = useState(false);
 
     const handleChange = e => {
         setForm({...form, [e.target.name]: e.target.value});
@@ -13,36 +13,30 @@ function Battle() {
     const handleSubmit = async e => {
         e.preventDefault();
         setError('');
-        setBattle(null);
+        setSuccess(false);
         try {
-            const result = await Loader.load('/battle/create', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({playerId: form.playerId}),
-                credentials: 'include'
-            });
-            setBattle(result);
-            const battleId = result.battleId;
-
-            await Loader.load(`/battle/${battleId}/join`, {
+            await Loader.load(`/battle/${form.battleId}/join`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({userId: form.playerId}),
                 credentials: 'include'
             });
-
-            window.location.href = `/battle/${battleId}`;
+            setSuccess(true);
+            window.location.href = `/battle/${form.battleId}`;
         } catch (err) {
-            setError(err.message || 'Battle creation failed');
+            setError(err.message || 'Failed to join battle');
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
+            <FormField label="Battle ID:" name="battleId" value={form.battleId}
+                       onChange={handleChange} required/>
             <FormField label="Player ID:" name="playerId" value={form.playerId}
                        onChange={handleChange} required/>
-            <button type="submit">Create Battle</button>
-            <FormMessage error={error} battle={battle}/>
+            <button type="submit">Join Battle</button>
+            {error && <div style={{color: 'red'}}>{error}</div>}
+            {success && <div style={{color: 'green'}}>Successfully joined battle!</div>}
         </form>
     );
 }
@@ -56,10 +50,4 @@ function FormField({label, name, type = 'text', value, onChange, required}) {
     );
 }
 
-function FormMessage({error, battle}) {
-    if (error) return <div style={{color: 'red'}}>{error}</div>;
-    if (battle) return <div style={{color: 'green'}}>Battle created: {JSON.stringify(battle)}</div>;
-    return null;
-}
-
-export default Battle;
+export default JoinBattle;

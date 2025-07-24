@@ -3,6 +3,7 @@ import Register from './account/register/Register';
 import UUIDUtils from '../common/utils/UUIDUtils';
 import Battle from "./account/battle/Battle.jsx";
 import BattleView from "./account/battle/BattleView.jsx";
+import JoinBattle from "./account/battle/JoinBattle.jsx";
 
 function Home() {
     const navigate = useNavigate();
@@ -17,7 +18,11 @@ function Home() {
         const uuidUtils = UUIDUtils.withPurpose('battle');
         const newUUID = await uuidUtils.fetchUUID();
         navigate(`/battle?id=${newUUID}`);
-    }
+    };
+
+    const joinBattle = () => {
+        navigate('/join-battle');
+    };
 
     return (
         <>
@@ -26,6 +31,9 @@ function Home() {
             </button>
             <button onClick={createBattle}>
                 Create Battle
+            </button>
+            <button onClick={joinBattle}>
+                Join Battle
             </button>
         </>
     );
@@ -39,6 +47,7 @@ function App() {
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/battle" element={<Battle/>}/>
                 <Route path="/battle/:battleId" element={<BattleView/>}/>
+                <Route path="/join-battle" element={<JoinBattle/>}/>
             </Routes>
         </Router>
     );
