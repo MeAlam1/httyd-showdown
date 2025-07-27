@@ -4,7 +4,7 @@ import Loader from '../../../common/server/Loader';
 function JoinBattle() {
     const [form, setForm] = useState({battleId: '', playerId: ''});
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState('');
 
     const handleChange = e => {
         setForm({...form, [e.target.name]: e.target.value});
@@ -13,16 +13,24 @@ function JoinBattle() {
     const handleSubmit = async e => {
         e.preventDefault();
         setError('');
-        setSuccess(false);
+        setSuccess('');
         try {
-            await Loader.load(`/battle/${form.battleId}/join`, {
+            const res = await Loader.load(`/battle/${form.battleId}/join`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({userId: form.playerId}),
                 credentials: 'include'
             });
-            setSuccess(true);
-            window.location.href = `/battle/${form.battleId}`;
+            if (res && res.context) {
+                if (Object.prototype.hasOwnProperty.call(res, 'playerBattleContext')) {
+                    setSuccess('Joined as player!');
+                } else {
+                    setSuccess('Joined as spectator!');
+                }
+                window.location.href = `/battle/${form.battleId}`;
+            } else {
+                setError('Unexpected response from server');
+            }
         } catch (err) {
             setError(err.message || 'Failed to join battle');
         }
@@ -36,7 +44,7 @@ function JoinBattle() {
                        onChange={handleChange} required/>
             <button type="submit">Join Battle</button>
             {error && <div style={{color: 'red'}}>{error}</div>}
-            {success && <div style={{color: 'green'}}>Successfully joined battle!</div>}
+            {success && <div style={{color: 'green'}}>{success}</div>}
         </form>
     );
 }
