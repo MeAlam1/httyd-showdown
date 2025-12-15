@@ -18,8 +18,7 @@ function JoinBattle() {
             const res = await Loader.load(`/battle/${form.battleId}/join`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({userId: form.playerId}),
-                credentials: 'include'
+                body: JSON.stringify({userId: form.playerId})
             });
             if (res && res.context) {
                 if (Object.prototype.hasOwnProperty.call(res, 'playerBattleContext')) {
