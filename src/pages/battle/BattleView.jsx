@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import Loader from '../../../common/server/Loader';
+import Loader from '../../../common/server/Loader.js';
 
 function BattleView() {
     const {battleId} = useParams();

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import Loader from '../../../common/server/Loader';
+import Loader from '../../../common/server/Loader.js';
 
-function JoinBattle() {
+function JoinBattleView() {
     const [form, setForm] = useState({battleId: '', playerId: ''});
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -57,4 +57,4 @@ function FormField({label, name, type = 'text', value, onChange, required}) {
     );
 }
 
-export default JoinBattle;
+export default JoinBattleView;
