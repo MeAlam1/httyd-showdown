@@ -4,7 +4,7 @@ import Loader from '../../../common/server/Loader';
 
 function Battle() {
     const location = useLocation();
-    const [form, setForm] = useState({playerId: 'player1'});
+    const [form, setForm] = useState({playerId: 'player'});
     const [error, setError] = useState('');
     const [battle, setBattle] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
@@ -41,10 +41,24 @@ function Battle() {
                 return;
             }
 
+            // Determine existing players from possible response shapes
+            const existingPlayers = (payload?.playerIds ||
+                payload?.players ||
+                payload?.context?.playerIds ||
+                payload?.context?.players ||
+                []).map(p => String(p));
+
+            // If player1 already present and player2 not present, ensure next join is player2
+            let joinUserId = playerId;
+            if (existingPlayers.includes('player1') && !existingPlayers.includes('player2')) {
+                joinUserId = 'player2';
+                setForm(prev => ({...prev, playerId: joinUserId}));
+            }
+
             await Loader.load(`/battle/${battleId}/join`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({userId: playerId})
+                body: JSON.stringify({userId: joinUserId})
             });
 
             window.location.href = `/battle/${battleId}`;

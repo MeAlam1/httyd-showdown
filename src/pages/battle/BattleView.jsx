@@ -1,3 +1,4 @@
+// javascript
 import React, {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Loader from '../../../common/server/Loader.js';
@@ -9,9 +10,10 @@ function BattleView() {
     const [loading, setLoading] = useState(false);
 
     const [postEndpoint, setPostEndpoint] = useState(`/battle/${battleId}/turn`);
-    const [postBody, setPostBody] = useState('{"type":"test"}');
+    const [postBody, setPostBody] = useState('{"action":"test"}');
     const [postResult, setPostResult] = useState(null);
     const [posting, setPosting] = useState(false);
+    const [postPlayerId, setPostPlayerId] = useState('');
 
     const apiUrl = import.meta.env.VITE_API_URL || '';
 
@@ -43,20 +45,29 @@ function BattleView() {
         loadBattle();
     }, [loadBattle]);
 
-    const sendPost = async (url, bodyObj) => {
+    const sendPost = async (url, bodyObj, playerId) => {
         setPosting(true);
         setError('');
         setPostResult(null);
         try {
             const fullUrl = buildUrl(url);
+            const headers = {'Content-Type': 'application/json'};
+            if (playerId) headers['Authorization'] = `Bearer ${playerId}`;
             const res = await fetch(fullUrl, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers,
                 body: JSON.stringify(bodyObj),
                 credentials: 'include',
             });
             const text = await res.text();
-            setPostResult({status: res.status, body: text});
+            let parsedBody;
+            try {
+                parsedBody = text ? JSON.parse(text) : null;
+                // eslint-disable-next-line no-unused-vars
+            } catch (e) {
+                parsedBody = text;
+            }
+            setPostResult({status: res.status, body: parsedBody});
         } catch (err) {
             setError(err?.message || 'POST failed');
         } finally {
@@ -64,6 +75,8 @@ function BattleView() {
             loadBattle();
         }
     };
+
+    const quickPost = (path, body = {}, playerId = postPlayerId) => sendPost(path, body, playerId);
 
     const handleSendPostClick = () => {
         let parsed;
@@ -73,10 +86,47 @@ function BattleView() {
             setError('Invalid JSON in POST body: ' + e.message);
             return;
         }
-        sendPost(postEndpoint, parsed);
+        sendPost(postEndpoint, parsed, postPlayerId);
     };
 
-    const quickPost = (path, body = {}) => sendPost(path, body);
+    const getPlayerIdFromEntry = (entry) => {
+        if (!entry) return null;
+        if (typeof entry === 'string') return entry;
+        return entry.id || entry.userId || entry.name || null;
+    };
+
+    const handleJoin = () => {
+        let nextId = 'player1';
+        if (battle && Array.isArray(battle.players)) {
+            const existingPlayers = battle.players.filter(p => !!getPlayerIdFromEntry(p));
+            const nextNum = existingPlayers.length + 1;
+            nextId = `player${nextNum}`;
+        }
+        quickPost(`/battle/${battleId}/join`, {userId: nextId});
+    };
+
+    const handleTurnAutoActive = () => {
+        if (battle && Array.isArray(battle.players) && battle.players.length >= 2) {
+            const p1 = getPlayerIdFromEntry(battle.players[0]) || 'player1';
+            const p2 = getPlayerIdFromEntry(battle.players[1]) || 'player2';
+            const currentActive = battle.activePlayerId || battle.currentActivePlayerId || null;
+            const activePlayerId = currentActive === p1 ? p2 : p1;
+
+            const actions = {};
+            actions[p1] = 'attack';
+            actions[p2] = 'defend';
+
+            quickPost(`/battle/${battleId}/turn`, {
+                actions,
+                activePlayerId,
+            });
+        } else {
+            quickPost(`/battle/${battleId}/turn`, {
+                actions: {player1: 'attack', player2: 'defend'},
+                activePlayerId: 'player1',
+            });
+        }
+    };
 
     if (error) return <div style={{color: 'red'}}>{error}</div>;
     if (loading || !battle) return <div>Loading...</div>;
@@ -92,9 +142,16 @@ function BattleView() {
                 </div>
                 <div style={{marginTop: 8}}>
                     <strong>Response (embedded):</strong>
-                    <pre style={{background: '#f3f3f3', padding: 12, overflow: 'auto'}}>
-                                        {JSON.stringify(battle, null, 2)}
-                                      </pre>
+                    <pre
+                        style={{
+                            background: '#f3f3f3',
+                            padding: 12,
+                            overflow: 'auto',
+                            maxHeight: 300,
+                        }}
+                    >
+                                {JSON.stringify(battle, null, 2)}
+                            </pre>
                 </div>
                 <button onClick={loadBattle} style={{marginTop: 8}}>
                     Refresh
@@ -113,6 +170,19 @@ function BattleView() {
                         />
                     </label>
                 </div>
+
+                <div style={{marginBottom: 8}}>
+                    <label>
+                        Player ID (used as Authorization Bearer header):
+                        <input
+                            value={postPlayerId}
+                            onChange={e => setPostPlayerId(e.target.value)}
+                            placeholder="player1 or user id"
+                            style={{width: '100%', boxSizing: 'border-box', marginTop: 4}}
+                        />
+                    </label>
+                </div>
+
                 <div style={{marginBottom: 8}}>
                     <label>
                         JSON body:
@@ -143,27 +213,34 @@ function BattleView() {
                         POST /finish
                     </button>
                     <button
-                        onClick={() => quickPost(`/battle/${battleId}/join`, {userId: 'player'})}
+                        onClick={handleJoin}
                         style={{marginLeft: 8}}
                         disabled={posting}
                     >
-                        POST /join (player)
+                        Join
                     </button>
                     <button
-                        onClick={() => quickPost(`/battle/${battleId}/join`, {
-                            userId: 'spectator'
-                        })}
+                        onClick={handleTurnAutoActive}
                         style={{marginLeft: 8}}
                         disabled={posting}
                     >
-                        POST /join (spectator)
+                        POST /turn (auto active)
                     </button>
                 </div>
                 {postResult && (
                     <div style={{marginTop: 8}}>
                         <strong>POST result:</strong>
                         <div>Status: {postResult.status}</div>
-                        <pre style={{background: '#eee', padding: 8}}>{postResult.body}</pre>
+                        <pre
+                            style={{
+                                background: '#eee',
+                                padding: 8,
+                                maxHeight: 240,
+                                overflow: 'auto',
+                            }}
+                        >
+                                    {typeof postResult.body === 'object' ? JSON.stringify(postResult.body, null, 2) : postResult.body}
+                                </pre>
                     </div>
                 )}
             </section>
