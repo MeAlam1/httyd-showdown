@@ -14,6 +14,26 @@ function Battle() {
         setForm({...form, [e.target.name]: e.target.value});
     };
 
+    const pickAvailablePlayers = (preferred, existing = [], count = 2) => {
+        const candidates = ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9'];
+        const picked = [];
+        if (preferred && !existing.includes(preferred) && picked.length < count) {
+            picked.push(preferred);
+        } else if (preferred && picked.length < count) {
+            picked.push(preferred);
+        }
+        for (const c of candidates) {
+            if (picked.length >= count) break;
+            if (picked.includes(c)) continue;
+            if (existing.includes(c)) continue;
+            picked.push(c);
+        }
+        while (picked.length < count) {
+            picked.push(`auto-${Date.now()}-${picked.length}`);
+        }
+        return picked;
+    };
+
     const createBattleRequest = useCallback(async (playerId) => {
         if (isCreatingRef.current) return;
         isCreatingRef.current = true;
@@ -25,15 +45,14 @@ function Battle() {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    playerIds: [playerId],
+                    playerIds: [],
                     spectatorIds: [],
                     phase: 'lobby',
-                }),
+                })
             });
 
             const payload = result?.data || result;
             setBattle(payload);
-            console.log(payload);
             const battleId = payload?.context?.battleId || payload?.battleId;
 
             if (!battleId) {
@@ -41,29 +60,40 @@ function Battle() {
                 return;
             }
 
-            // Determine existing players from possible response shapes
             const existingPlayers = (payload?.playerIds ||
                 payload?.players ||
                 payload?.context?.playerIds ||
                 payload?.context?.players ||
+                payload?.context?.allPlayerIds ||
                 []).map(p => String(p));
 
-            // If player1 already present and player2 not present, ensure next join is player2
-            let joinUserId = playerId;
-            if (existingPlayers.includes('player1') && !existingPlayers.includes('player2')) {
-                joinUserId = 'player2';
-                setForm(prev => ({...prev, playerId: joinUserId}));
-            }
+            const teamIds = Object.keys(payload?.context?.teams || {});
+
+            const [firstUser, secondUser] = pickAvailablePlayers(playerId, existingPlayers, 2);
+
+            setForm(prev => ({...prev, playerId: firstUser}));
+
+            const targetTeamIds = teamIds.length >= 2
+                ? teamIds.slice(0, 2)
+                : teamIds.length === 1
+                    ? [teamIds[0], 'team-2']
+                    : ['team-1', 'team-2'];
 
             await Loader.load(`/battle/${battleId}/join`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({userId: joinUserId})
+                body: JSON.stringify({userId: firstUser, teamId: targetTeamIds[0]})
+            });
+
+            await Loader.load(`/battle/${battleId}/join`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({userId: secondUser, teamId: targetTeamIds[1]})
             });
 
             window.location.href = `/battle/${battleId}`;
         } catch (err) {
-            setError(err.message || 'Battle creation failed');
+            setError(err?.message || 'Battle creation failed');
         } finally {
             isCreatingRef.current = false;
             setIsCreating(false);
