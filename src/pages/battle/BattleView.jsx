@@ -1,4 +1,3 @@
-// javascript
 import React, {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Loader from '../../../common/server/Loader.js';
@@ -88,43 +87,39 @@ function BattleView() {
         }
         sendPost(postEndpoint, parsed, postPlayerId);
     };
+    const storageKey = (id) => `battle_${id}_playerNumber`;
 
-    const getPlayerIdFromEntry = (entry) => {
-        if (!entry) return null;
-        if (typeof entry === 'string') return entry;
-        return entry.id || entry.userId || entry.name || null;
-    };
+    const [playerNumber, setPlayerNumber] = useState(() => {
+        try {
+            const raw = battleId ? localStorage.getItem(storageKey(battleId)) : null;
+            const n = parseInt(raw, 10);
+            return Number.isInteger(n) ? n : 3;
+            // eslint-disable-next-line no-unused-vars
+        } catch (e) {
+            return 3;
+        }
+    });
+
+    useEffect(() => {
+        try {
+            const raw = battleId ? localStorage.getItem(storageKey(battleId)) : null;
+            const n = parseInt(raw, 10);
+            setPlayerNumber(Number.isInteger(n) ? n : 3);
+            // eslint-disable-next-line no-unused-vars
+        } catch (e) {
+            setPlayerNumber(3);
+        }
+    }, [battleId]);
 
     const handleJoin = () => {
-        let nextId = 'player1';
-        if (battle && Array.isArray(battle.players)) {
-            const existingPlayers = battle.players.filter(p => !!getPlayerIdFromEntry(p));
-            const nextNum = existingPlayers.length + 1;
-            nextId = `player${nextNum}`;
-        }
+        const nextId = `player${playerNumber}`;
         quickPost(`/battle/${battleId}/join`, {userId: nextId});
-    };
-
-    const handleTurnAutoActive = () => {
-        if (battle && Array.isArray(battle.players) && battle.players.length >= 2) {
-            const p1 = getPlayerIdFromEntry(battle.players[0]) || 'player1';
-            const p2 = getPlayerIdFromEntry(battle.players[1]) || 'player2';
-            const currentActive = battle.activePlayerId || battle.currentActivePlayerId || null;
-            const activePlayerId = currentActive === p1 ? p2 : p1;
-
-            const actions = {};
-            actions[p1] = 'attack';
-            actions[p2] = 'defend';
-
-            quickPost(`/battle/${battleId}/turn`, {
-                actions,
-                activePlayerId,
-            });
-        } else {
-            quickPost(`/battle/${battleId}/turn`, {
-                actions: {player1: 'attack', player2: 'defend'},
-                activePlayerId: 'player1',
-            });
+        const nextNum = playerNumber + 1;
+        setPlayerNumber(nextNum);
+        try {
+            localStorage.setItem(storageKey(battleId), String(nextNum));
+            // eslint-disable-next-line no-unused-vars
+        } catch (e) { /* empty */
         }
     };
 
@@ -150,8 +145,8 @@ function BattleView() {
                             maxHeight: 300,
                         }}
                     >
-                                {JSON.stringify(battle, null, 2)}
-                            </pre>
+                                        {JSON.stringify(battle, null, 2)}
+                                    </pre>
                 </div>
                 <button onClick={loadBattle} style={{marginTop: 8}}>
                     Refresh
@@ -219,13 +214,6 @@ function BattleView() {
                     >
                         Join
                     </button>
-                    <button
-                        onClick={handleTurnAutoActive}
-                        style={{marginLeft: 8}}
-                        disabled={posting}
-                    >
-                        POST /turn (auto active)
-                    </button>
                 </div>
                 {postResult && (
                     <div style={{marginTop: 8}}>
@@ -239,8 +227,8 @@ function BattleView() {
                                 overflow: 'auto',
                             }}
                         >
-                                    {typeof postResult.body === 'object' ? JSON.stringify(postResult.body, null, 2) : postResult.body}
-                                </pre>
+                                            {typeof postResult.body === 'object' ? JSON.stringify(postResult.body, null, 2) : postResult.body}
+                                        </pre>
                     </div>
                 )}
             </section>
