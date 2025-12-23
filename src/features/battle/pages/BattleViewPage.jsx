@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Loader from '../../../common/server/Loader.js';
 
-function BattleView() {
+function BattleViewPage() {
     const {battleId} = useParams();
     const [battle, setBattle] = useState(null);
     const [error, setError] = useState('');
@@ -62,7 +62,6 @@ function BattleView() {
             let parsedBody;
             try {
                 parsedBody = text ? JSON.parse(text) : null;
-                // eslint-disable-next-line no-unused-vars
             } catch (e) {
                 parsedBody = text;
             }
@@ -87,6 +86,7 @@ function BattleView() {
         }
         sendPost(postEndpoint, parsed, postPlayerId);
     };
+
     const storageKey = (id) => `battle_${id}_playerNumber`;
 
     const [playerNumber, setPlayerNumber] = useState(() => {
@@ -94,7 +94,6 @@ function BattleView() {
             const raw = battleId ? localStorage.getItem(storageKey(battleId)) : null;
             const n = parseInt(raw, 10);
             return Number.isInteger(n) ? n : 3;
-            // eslint-disable-next-line no-unused-vars
         } catch (e) {
             return 3;
         }
@@ -105,7 +104,6 @@ function BattleView() {
             const raw = battleId ? localStorage.getItem(storageKey(battleId)) : null;
             const n = parseInt(raw, 10);
             setPlayerNumber(Number.isInteger(n) ? n : 3);
-            // eslint-disable-next-line no-unused-vars
         } catch (e) {
             setPlayerNumber(3);
         }
@@ -118,7 +116,6 @@ function BattleView() {
         setPlayerNumber(nextNum);
         try {
             localStorage.setItem(storageKey(battleId), String(nextNum));
-            // eslint-disable-next-line no-unused-vars
         } catch (e) { /* empty */
         }
     };
@@ -137,16 +134,9 @@ function BattleView() {
                 </div>
                 <div style={{marginTop: 8}}>
                     <strong>Response (embedded):</strong>
-                    <pre
-                        style={{
-                            background: '#f3f3f3',
-                            padding: 12,
-                            overflow: 'auto',
-                            maxHeight: 300,
-                        }}
-                    >
-                                        {JSON.stringify(battle, null, 2)}
-                                    </pre>
+                    <pre style={{background: '#f3f3f3', padding: 12, overflow: 'auto', maxHeight: 300}}>
+                        {JSON.stringify(battle, null, 2)}
+                    </pre>
                 </div>
                 <button onClick={loadBattle} style={{marginTop: 8}}>
                     Refresh
@@ -219,16 +209,9 @@ function BattleView() {
                     <div style={{marginTop: 8}}>
                         <strong>POST result:</strong>
                         <div>Status: {postResult.status}</div>
-                        <pre
-                            style={{
-                                background: '#eee',
-                                padding: 8,
-                                maxHeight: 240,
-                                overflow: 'auto',
-                            }}
-                        >
-                                            {typeof postResult.body === 'object' ? JSON.stringify(postResult.body, null, 2) : postResult.body}
-                                        </pre>
+                        <pre style={{background: '#eee', padding: 8, maxHeight: 240, overflow: 'auto'}}>
+                            {typeof postResult.body === 'object' ? JSON.stringify(postResult.body, null, 2) : postResult.body}
+                        </pre>
                     </div>
                 )}
             </section>
@@ -236,4 +219,4 @@ function BattleView() {
     );
 }
 
-export default BattleView;
+export default BattleViewPage;

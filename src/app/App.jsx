@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
-import Battle from "./services/battle/Battle.jsx";
-import BattleView from "./pages/battle/BattleView.jsx";
-import JoinBattleView from "./pages/battle/JoinBattleView.jsx";
+import BattleCreatePage from '../features/battle/pages/BattleCreatePage.jsx';
+import BattleViewPage from '../features/battle/pages/BattleViewPage.jsx';
+import BattleJoinPage from '../features/battle/pages/BattleJoinPage.jsx';
 
 function Home() {
     const navigate = useNavigate();
@@ -31,9 +31,9 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/battle" element={<Battle/>}/>
-                <Route path="/battle/:battleId" element={<BattleView/>}/>
-                <Route path="/join-battle" element={<JoinBattleView/>}/>
+                <Route path="/battle" element={<BattleCreatePage/>}/>
+                <Route path="/battle/:battleId" element={<BattleViewPage/>}/>
+                <Route path="/join-battle" element={<BattleJoinPage/>}/>
             </Routes>
         </Router>
     );
