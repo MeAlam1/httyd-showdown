@@ -7,7 +7,7 @@ class Loader {
 
         const isGet = !opts.method || opts.method === 'GET';
         const apiUrl = import.meta.env.VITE_API_URL || '';
-        const url = `${apiUrl}${pEndpoint}`;
+        const url = `${apiUrl}api${pEndpoint}`;
 
         if (isGet && Loader.cache[pEndpoint]) {
             return Loader.cache[pEndpoint];

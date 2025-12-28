@@ -3,6 +3,7 @@ import BattleCreatePage from '../features/battle/pages/BattleCreatePage.jsx';
 import BattleViewPage from '../features/battle/pages/BattleViewPage.jsx';
 import BattleJoinPage from '../features/battle/pages/BattleJoinPage.jsx';
 import BattlePlayerPage from '../features/battle/pages/BattlePlayerPage.jsx';
+import TeamBuilderPage from '../features/team/pages/TeamBuilderPage.jsx';
 
 function Home() {
     const navigate = useNavigate();
@@ -19,17 +20,16 @@ function Home() {
         navigate('/play');
     };
 
+    const teamBuilder = () => {
+        navigate('/team-builder');
+    };
+
     return (
         <>
-            <button onClick={createBattle}>
-                Create Battle
-            </button>
-            <button onClick={joinBattle}>
-                Join Battle
-            </button>
-            <button onClick={playerPov}>
-                Player POV
-            </button>
+            <button onClick={createBattle}>Create Battle</button>
+            <button onClick={joinBattle}>Join Battle</button>
+            <button onClick={playerPov}>Player POV</button>
+            <button onClick={teamBuilder}>Team Builder</button>
         </>
     );
 }
@@ -44,6 +44,7 @@ function App() {
                 <Route path="/join-battle" element={<BattleJoinPage/>}/>
                 <Route path="/play" element={<BattlePlayerPage/>}/>
                 <Route path="/play/:battleId" element={<BattlePlayerPage/>}/>
+                <Route path="/team-builder" element={<TeamBuilderPage/>}/>
             </Routes>
         </Router>
     );
