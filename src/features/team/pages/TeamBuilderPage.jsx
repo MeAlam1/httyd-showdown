@@ -1,106 +1,54 @@
-// src/features/team/pages/TeamBuilderPage.jsx
-
 import React, {useEffect, useMemo, useState} from 'react';
 import InlineMessage from '../../../common/components/InlineMessage.jsx';
 import FormField from '../../../common/components/FormField.jsx';
-
-function joinUrl(base, endpoint) {
-    const b = String(base || '').replace(/\/+$/, '');
-    const e = String(endpoint || '').replace(/^\/+/, '');
-    return b ? `${b}/${e}` : `/${e}`;
-}
-
-function isResourceNotFound(res, contentType, bodyText) {
-    if (res.status !== 404) return false;
-    if (!String(contentType || '').includes('application/json')) return false;
-
-    try {
-        const data = JSON.parse(bodyText || '{}');
-        const err = String(data?.error || '').toLowerCase();
-        if (err !== 'resource not found') return false;
-
-        const resource = String(data?.resource || '');
-        if (!resource) return true;
-
-        const normalized = resource.replace(/\\/g, '/').replace(/^\/+/, '');
-        return normalized.startsWith('static/api/dragons/');
-    } catch {
-        return false;
-    }
-}
-
-async function fetchJson(url, {ignoreResourceNotFound = true} = {}) {
-    const res = await fetch(url, {credentials: 'include'});
-    const finalUrl = res.url || url;
-    const contentType = res.headers.get('content-type') || '';
-    const bodyText = await res.text();
-
-    if (ignoreResourceNotFound && isResourceNotFound(res, contentType, bodyText)) {
-        return null;
-    }
-
-    if (!res.ok) {
-        throw new Error(
-            `HTTP ${res.status} ${res.statusText}\n` +
-            `URL: ${finalUrl}\n` +
-            `Content-Type: ${contentType || 'unknown'}\n` +
-            `${bodyText.slice(0, 800)}`
-        );
-    }
-
-    if (!contentType.includes('application/json')) {
-        throw new Error(
-            `Expected JSON but got: ${contentType || 'unknown'}\n` +
-            `URL: ${finalUrl}\n` +
-            `${bodyText.slice(0, 800)}`
-        );
-    }
-
-    try {
-        return JSON.parse(bodyText);
-    } catch (e) {
-        throw new Error(
-            `Invalid JSON\n` +
-            `URL: ${finalUrl}\n` +
-            `${String(e?.message || e)}\n` +
-            `${bodyText.slice(0, 800)}`
-        );
-    }
-}
+import Loader from '../../../common/server/Loader.js';
 
 function normalizeDragonPath(p) {
+    if (!p) return null;
+    // Ensure single leading slash and .json extension
     const normalized = String(p || '').replace(/\\/g, '/').replace(/^\/+/, '');
     if (!normalized) return null;
-    return normalized.endsWith('.json') ? normalized : `${normalized}.json`;
+    const withExt = normalized.endsWith('.json') ? normalized : `${normalized}.json`;
+    return `/${withExt}`;
 }
 
-async function loadDragonFromPath(apiUrl, dragonJsonPath) {
-    const endpoint = normalizeDragonPath(dragonJsonPath);
+function joinEndpoint(base, entry) {
+    if (!base) return normalizeDragonPath(entry);
+    const b = String(base).replace(/\/+$/, '');
+    const e = String(entry).replace(/^\/+/, '');
+    return `/${b.replace(/^\/+/, '')}/${e}`;
+}
+
+async function loadDragonFromPath(dragonJsonPath) {
+    const endpoint = normalizeDragonPath(dragonJsonPath).replace(/^\/+/, '/').replace(/\/{2,}/g, '/');
     if (!endpoint) return null;
 
-    const url = joinUrl(apiUrl, endpoint);
-    const data = await fetchJson(url, {ignoreResourceNotFound: true});
-    if (!data) return null;
-
-    const id = String(data?.id ?? endpoint);
-    const name = String(data?.name ?? data?.displayName ?? id);
-    return {id, name, path: endpoint, data};
+    try {
+        const data = await Loader.load(endpoint);
+        if (!data) return null;
+        const id = String(data?.id ?? endpoint);
+        const name = String(data?.name ?? data?.displayName ?? id);
+        return {id, name, path: endpoint, data};
+    } catch {
+        // ignore errors for individual dragon loads
+        return null;
+    }
 }
 
-async function loadAllDragonsFromApiIndex(apiUrl) {
-    const indexUrl = joinUrl(apiUrl, 'static/api');
-    const index = await fetchJson(indexUrl, {ignoreResourceNotFound: false});
+async function loadAllDragonsFromApiIndex() {
+    const raw = await Loader.load('/static/api');
+    const index = raw?.data || raw || {};
 
-    const base = String(index?.dragonsBase || '').replace(/\/+$/, '');
+    const base = String(index?.dragonsBase || index?.base || '').replace(/\/+$/, '');
     const list = Array.isArray(index?.dragons) ? index.dragons : [];
 
     if (!base || list.length === 0) return [];
 
     const loaded = await Promise.all(
         list.map(async (entry) => {
-            const normalized = String(entry).replace(/^\/+/, '');
-            const path = `${base}/${normalized}`;
-            return loadDragonFromPath(apiUrl, path);
+            // build full endpoint using base from index
+            const entryPath = joinEndpoint(base, entry);
+            return loadDragonFromPath(entryPath);
         })
     );
 
@@ -113,8 +61,6 @@ async function loadAllDragonsFromApiIndex(apiUrl) {
 }
 
 export default function TeamBuilderPage() {
-    const apiUrl = import.meta.env.VITE_API_URL || '';
-
     const [dragons, setDragons] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -134,7 +80,7 @@ export default function TeamBuilderPage() {
             setSuccess('');
 
             try {
-                const list = await loadAllDragonsFromApiIndex(apiUrl);
+                const list = await loadAllDragonsFromApiIndex();
                 if (!cancelled) setDragons(list);
             } catch (e) {
                 if (!cancelled) {
@@ -150,7 +96,7 @@ export default function TeamBuilderPage() {
         return () => {
             cancelled = true;
         };
-    }, [apiUrl]);
+    }, []);
 
     const canAddMore = teamIds.length < 6;
     const canSave = playerName.trim().length > 0 && teamIds.length === 6 && !saving;
